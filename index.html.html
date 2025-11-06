@@ -15,9 +15,22 @@
       color:var(--gray);background:var(--navy);overflow-x:hidden;text-align:center;
     }
     .hero{
-      min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px;padding:28px;position:relative;
-      background:linear-gradient(rgba(12,35,64,.7), rgba(12,35,64,.85)),url('https://upload.wikimedia.org/wikipedia/commons/d/d2/Aaron_Judge_%2851004580866%29_%28cropped%29.jpg') center 25%/cover no-repeat;
-    }
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:16px;
+  padding:28px;
+  position:relative;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255,255,255,0.08) 0%, rgba(12,35,64,0.85) 70%),
+    linear-gradient(rgba(12,35,64,.45), rgba(12,35,64,.75)),
+    url('https://upload.wikimedia.org/wikipedia/commons/d/d2/Aaron_Judge_%2851004580866%29_%28cropped%29.jpg')
+      center 25%/cover no-repeat;
+  background-blend-mode: overlay, normal;
+}
+
     .hero::after{
       content:"";position:absolute;inset:0;pointer-events:none;opacity:.10;
       background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.08)0,rgba(255,255,255,.08)2px,transparent 2px,transparent 18px);
