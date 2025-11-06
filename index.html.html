@@ -7,29 +7,23 @@
   <meta name="theme-color" content="#0C2340" />
   <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/7/70/NewYorkYankees_caplogo.svg" />
   <style>
-    :root{
-      --navy:#0C2340;--gray:#C4CED4;--white:#ffffff;--accent:#E4002B;--deepgray:#AAB5BC
-    }
+    :root{--navy:#0C2340;--gray:#C4CED4;--white:#ffffff;--accent:#E4002B;--deepgray:#AAB5BC}
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
       font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
       color:var(--gray);background:var(--navy);overflow-x:hidden;text-align:center;
     }
-
     .hero{
       min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px;padding:28px;position:relative;
       background:linear-gradient(rgba(12,35,64,.7), rgba(12,35,64,.85)),url('https://upload.wikimedia.org/wikipedia/commons/d/d2/Aaron_Judge_%2851004580866%29_%28cropped%29.jpg') center 25%/cover no-repeat;
     }
-
     .hero::after{
       content:"";position:absolute;inset:0;pointer-events:none;opacity:.10;
       background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.08)0,rgba(255,255,255,.08)2px,transparent 2px,transparent 18px);
     }
-
     h1{color:var(--white);font-weight:900;text-shadow:0 5px 25px rgba(0,0,0,.6);font-size:clamp(22px,3.6vw,42px);z-index:2;}
     .sub{opacity:.95;font-size:clamp(15px,2.5vw,17px);color:var(--gray);z-index:2;}
-
     .timer{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;margin-top:18px;z-index:2;}
     .tile{background:rgba(12,35,64,.55);border:1.5px solid var(--deepgray);border-radius:18px;padding:14px 18px;min-width:110px;backdrop-filter:saturate(140%) blur(6px);box-shadow:0 8px 24px rgba(0,0,0,.4);}
     .num{font-variant-numeric:tabular-nums;font-weight:900;color:var(--white);text-shadow:0 0 14px rgba(255,255,255,.35),0 0 6px rgba(255,255,255,.35);font-size:clamp(46px,8vw,110px);}
@@ -45,7 +39,7 @@
       color:#fff;background:linear-gradient(135deg,#E4002B,#0C2340,#E4002B);
       background-size:300% 300%;animation:glowShift 4s ease infinite;
       border:none;border-radius:60px;cursor:pointer;letter-spacing:1px;
-      text-transform:uppercase;transition:all .3s ease;box-shadow:0 0 25px rgba(255,255,255,0.4);
+      text-transform:uppercase;transition:all .3s ease;box-shadow:0 0 25px rgba(255,255,255,0.4);z-index:2;
     }
     @keyframes glowShift {
       0%{background-position:0% 50%;}
@@ -54,8 +48,23 @@
     }
     .party-btn:hover{transform:scale(1.1) rotate(-1deg);box-shadow:0 0 40px rgba(255,255,255,0.7);}
     
+    /* Follow button */
+    .cta{
+      margin-top:20px;
+      display:inline-flex;align-items:center;gap:8px;
+      padding:12px 24px;border:2px solid var(--gray);border-radius:999px;
+      color:var(--white);font-weight:700;text-decoration:none;
+      background:rgba(255,255,255,.1);backdrop-filter:blur(3px);
+      transition:.3s ease;z-index:2;
+    }
+    .cta:hover{background:rgba(255,255,255,.25);transform:scale(1.05);}
     footer{margin-top:40px;font-size:13px;color:var(--deepgray);}
     footer a{color:var(--gray)}
+    /* Flower animation */
+    @keyframes fall {
+      0% {transform:translateY(-10vh) rotate(0deg);opacity:1;}
+      100% {transform:translateY(110vh) rotate(720deg);opacity:0;}
+    }
   </style>
 </head>
 <body>
@@ -73,6 +82,9 @@
     <!-- PARTY BUTTON + AUDIO -->
     <button id="partyBtn" class="party-btn">🎉 Click me to start the party 🎉</button>
     <audio id="partySong" src="/yesnetwork.mp3" preload="auto"></audio>
+
+    <!-- Twitter follow -->
+    <a class="cta" href="https://x.com/DaysManutd" target="_blank" rel="noopener">🐦 Follow @DaysManutd</a>
 
     <footer>
       <p>Background photo: Aaron Judge (CC BY 2.0) by 
@@ -97,7 +109,6 @@
     const partySong=document.getElementById('partySong');
     let playing=false;
 
-    // fade helper
     async function fadeAudio(targetVolume,duration){
       const startVolume=partySong.volume;
       const steps=30;const stepTime=duration/steps;
@@ -107,28 +118,20 @@
       }
     }
 
-    // confetti (simple flower-like burst)
-    function spawnConfetti(){
-      const colors=['#FFD700','#FF69B4','#C4CED4','#E4002B'];
+    function flowerShower(){
+      const emojis=['🌸','🌼','🌺','🌹','🌷','💐'];
       for(let i=0;i<60;i++){
         const span=document.createElement('span');
-        span.textContent='🌸';
+        span.textContent=emojis[Math.floor(Math.random()*emojis.length)];
         span.style.position='fixed';
         span.style.left=Math.random()*100+'vw';
-        span.style.top='-5vh';
+        span.style.top='-10vh';
         span.style.fontSize=Math.random()*20+15+'px';
-        span.style.animation=`fall${i} ${3+Math.random()*3}s linear forwards`;
-        span.style.zIndex=1000;
+        span.style.animation='fall '+(3+Math.random()*3)+'s linear forwards';
+        span.style.zIndex=9999;
         document.body.appendChild(span);
         setTimeout(()=>span.remove(),7000);
       }
-      const style=document.createElement('style');
-      style.textContent=`
-        @keyframes fall${Math.floor(Math.random()*9999)}{
-          0%{transform:translateY(0) rotate(0deg);}
-          100%{transform:translateY(110vh) rotate(720deg);}
-        }`;
-      document.head.appendChild(style);
     }
 
     partyBtn.addEventListener('click',async()=>{
@@ -138,7 +141,7 @@
         partySong.loop=true;
         await partySong.play();
         fadeAudio(1,2000);
-        spawnConfetti();
+        flowerShower();
         partyBtn.textContent='🔥 Party’s ON! Click to stop 🔥';
         playing=true;
       } else {
